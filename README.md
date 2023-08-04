@@ -1,8 +1,6 @@
 # agc-backend
 
-![NPM Version](https://img.shields.io/npm/v/@agelesscoding/cli.svg)
-![NPM License](https://img.shields.io/npm/l/%40agelesscoding%2Fcli)
-![npm Downloads](https://img.shields.io/npm/dm/%40agelesscoding%2Fcli)
+![GitHub](https://img.shields.io/github/license/agelesscoding/agc-backend)
 
 Backend service for AGC project.
 
