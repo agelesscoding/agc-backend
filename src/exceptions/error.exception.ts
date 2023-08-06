@@ -1,13 +1,17 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const errorMessages = {
-  createUserValidateFail: {
+  userValidateFail: {
     errno: 101001,
-    message: '创建用户验证失败',
+    message: '输入信息验证失败',
   },
   createUserAlreadyExists: {
     errno: 101002,
     message: '该邮箱已被注册，请直接登录',
+  },
+  loginValidateFail: {
+    errno: 101003,
+    message: '该用户不存在或密码错误',
   },
 };
 
