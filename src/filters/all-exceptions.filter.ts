@@ -25,7 +25,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       errno,
       message: errors ? errorMessages[exception.message]?.message : null,
     };
-    if (Object.keys(errors)?.length) {
+    if (errors && Object.keys(errors)?.length) {
       responseData['errors'] = errors;
     }
     response.status(status).json(responseData);

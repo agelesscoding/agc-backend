@@ -15,7 +15,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   /** create user account by email */
-  async createUserByEmail(params: CreateUserByEmailParams): Promise<any> {
+  async createUserByEmail(params: CreateUserByEmailParams): Promise<User> {
     const classBody = plainToClass(CreateEmailUserDto, params);
 
     // validate user input
@@ -38,12 +38,14 @@ export class UserService {
   }
 
   /** find user account by id */
-  async findUserById(id: string): Promise<any> {
-    return await this.userModel.find({ _id: id });
+  async findUserById(id: string): Promise<User> {
+    return await this.userModel.findById(id);
   }
 
   /** user login by email */
-  async loginByEmail(params: LoginByEmailParams): Promise<any> {
+  async loginByEmail(
+    params: LoginByEmailParams,
+  ): Promise<{ data: User; shouldSetCookie: boolean }> {
     const classBody = plainToClass(CreateEmailUserDto, params);
 
     // validate user input
@@ -69,8 +71,8 @@ export class UserService {
 
     // validate password
     if (!verifyPassword) {
-      return new ErrorException('loginValidateFail', errors);
+      throw new ErrorException('loginValidateFail', errors);
     }
-    return existingUser;
+    return { data: existingUser, shouldSetCookie: true };
   }
 }
