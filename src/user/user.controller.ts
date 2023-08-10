@@ -4,9 +4,10 @@ import {
   Get,
   Post,
   Query,
-  SetMetadata,
+  Res,
   UseFilters,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { User } from './user.schema';
 import { UserService } from './user.service';
@@ -20,7 +21,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create')
-  async createUserByEmail(@Body() body: CreateEmailUserDto): Promise<any> {
+  async createUserByEmail(@Body() body: CreateEmailUserDto): Promise<User> {
     const params: CreateUserByEmailParams = {
       username: body.username,
       password: body.password,
@@ -35,12 +36,21 @@ export class UserController {
   }
 
   @Post('login')
-  @SetMetadata('responseMessage', '登录成功')
-  async loginByEmail(@Body() body: CreateEmailUserDto): Promise<any> {
+  // @SetMetadata('responseMessage', '登录成功')
+  async loginByEmail(@Body() body: CreateEmailUserDto, @Res() res: Response) {
     const params: LoginByEmailParams = {
       username: body.username,
       password: body.password,
     };
-    return await this.userService.loginByEmail(params);
+    const result = await this.userService.loginByEmail(params);
+    if (result?.shouldSetCookie) {
+      res.cookie('username', result.data.username);
+    }
+
+    res.json({
+      errno: 0,
+      message: '登录成功',
+      data: result.data,
+    });
   }
 }

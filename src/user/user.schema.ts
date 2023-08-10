@@ -1,6 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema({ timestamps: true })
+@Schema({
+  timestamps: true,
+  toJSON: {
+    transform(_doc, ret) {
+      delete ret.password;
+      delete ret.__v;
+    },
+  },
+})
 export class User {
   /** user name */
   @Prop({ unique: true, required: true })
